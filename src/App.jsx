@@ -1,35 +1,27 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
+import auth from "./pages/Auth.jsx";
+import client from "../supabase.js"
+import PrivateRoute from './components/PrivateRoute';
+import home from "./pages/home.jsx"
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-const supabase = createClient(supabaseUrl, supabaseKey);
-function App() {
-  const [tabel, settabel] = useState([]);
-
-  useEffect(() => {
-    gettabel();
-  }, []);
-
-  async function gettabel() {
-    const { data, error } = await supabase.from("tabel").select();
-
-    if (error) {
-      console.error(error);
-      return;
-    }
-
-    settabel(data);
-  }
-
+export default function App() {
   return (
-    <ul>
-      {tabel.map((tabel) => (
-        <li key={tabel.naam}>{tabel.naam}</li>
-      ))}
-    </ul>
+      <Routes>
+          {/* De homepage is beschermd – alleen zichtbaar voor ingelogde gebruikers */}
+          <Route path="/" element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          } />
+
+
+          {/* Inlogpagina – toegankelijk voor iedereen */}
+          <Route path="/login" element={<Auth mode="login" />} />
+
+
+          {/* Registratiepagina – toegankelijk voor iedereen */}
+          <Route path="/register" element={<Auth mode="register" />} />
+      </Routes>
   );
 }
-
-export default App;
