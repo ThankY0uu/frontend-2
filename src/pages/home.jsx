@@ -14,10 +14,16 @@ export default function Home() {
     });
     if (!error) setContent("");
   }
-
+  async function handleLogout() {
+    await supabase.auth.signOut();
+  }
   return (
     <div>
-      <h1>Home</h1>
+      <h1>Home
+        <button onClick={handleLogout}>Uitloggen</button>
+
+
+      </h1>
     </div>
   );
 }
