@@ -1,0 +1,147 @@
+div:has(> form) {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 32px 20px;
+}
+
+h1 {
+    color: #3a2a5a;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-top: 1px solid #C4BCE7;
+    padding-top: 24px;
+}
+
+form::before {
+    font-size: 22px;
+    font-weight: 700;
+    color: #9b8abf;
+    text-align: center;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding-bottom: 4px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: 1px solid #C4BCE7;
+    background: #fdf8ff;
+    color: #9b8abf;
+    font-size: 15px;
+    font-family: inherit;
+    resize: none;
+    box-sizing: border-box;
+    min-height: 120px;
+    transition: border-color 0.25s, box-shadow 0.25s;
+    overflow: hidden;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #c9b8e8;
+    box-shadow: 0 0 0 3px rgba(196, 188, 231, 0.3);
+}
+
+textarea::placeholder {
+    color: #aaa;
+}
+
+.file-label {
+    flex-shrink: 0;
+    font-size: 15px;
+    padding: 7px 20px;
+    border-radius: 6px;
+    background: #C4BCE7;
+    color: #3a2a5a;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.file-label:hover {
+    background: rgba(227, 171, 196, 0.15);
+    box-shadow: 0 4px 12px rgba(227, 171, 196, 0.4);
+}
+
+.file-label input[type="file"] {
+    display: none;
+}
+
+button[type="submit"] {
+    align-self: flex-end;
+    font-size: 15px;
+    padding: 7px 20px;
+    border-radius: 6px;
+    background: #C4BCE7;
+    color: #3a2a5a;
+    border: none;
+    cursor: pointer;
+    transition: box-shadow 0.2s, background 0.2s;
+}
+
+button[type="submit"]:hover {
+    background: #c9b8e8;
+    box-shadow: 0 4px 12px rgba(196, 188, 231, 0.5);
+}
+
+/* ── Posts ── */
+div:has(> form) > div {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid #C4BCE7;
+}
+
+div:has(> form) > div:first-of-type {
+    border-top: 1px solid #C4BCE7;
+    margin-top: 8px;
+}
+
+div:has(> form) > div p {
+    margin: 0;
+    font-size: 15px;
+    color: #2a2a2a;
+    line-height: 1.55;
+    flex: 1;
+}
+
+div:has(> form) > div button {
+    flex-shrink: 0;
+    font-size: 15px;
+    padding: 7px 20px;
+    border-radius: 6px;
+    background: #C4BCE7;
+    color: #3a2a5a;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+div:has(> form) > div button:hover {
+    background: #c9b8e8;
+    box-shadow: 0 4px 12px rgba(196, 188, 231, 0.5);
+}
+
+@media (max-width: 600px) {
+    div:has(> form) {
+        padding: 24px 16px;
+    }
+
+    div:has(> form) > div {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
