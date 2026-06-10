@@ -34,13 +34,19 @@ export default function Auth({ mode = 'login' }) {
       if (error) setError(error.message);
       else navigate('/');
     }
-
-    if (mode === 'register') {
-      // Nieuw account aanmaken
-      const { error } = await supabase.auth.signUp({ email, password });
-      if (error) setError(error.message);
-      else setMessage('Account aangemaakt! Je kunt nu inloggen.');
-    }
+if (mode === 'register') {
+  const { data, error } = await supabase.auth.signUp({ email, password });
+  if (error) {
+    setError(error.message);
+  } else {
+    // Profiel aanmaken na registratie
+    await supabase.from('profiles').insert({
+      user_id: data.user.id,
+      username: email.split('@')[0], // tijdelijke username op basis van email
+    });
+    navigate('/profile');
+  }
+}
 
     // Wachtwoord vergeten functionaliteit is voorlopig uitgezet, maar hier is hoe het zou werken:
     // if (mode === 'forgot') {
