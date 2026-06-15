@@ -2,6 +2,8 @@ import './home.css';
 import {useState, useEffect} from 'react';
 import {useSession} from '../hooks/useSession';
 import {supabase} from '../supabase';
+import {FaHeart} from "react-icons/fa";
+import {CiHeart} from "react-icons/ci";
 
 export default function Home() {
     const {session} = useSession();
@@ -12,7 +14,7 @@ export default function Home() {
     const fetchPosts = async () => {
         const {data, error} = await supabase
             .from("post")
-            .select("*")
+            .select("*, profiles(username, avatar_url), likes(*)")
             .order("created_at", {ascending: false});
 
         if (!error) setPosts(data);
@@ -60,6 +62,23 @@ export default function Home() {
         if (!error) fetchPosts();
     };
 
+    const toggleLike = async (post) => {
+        const liked = post.likes.some(like => like.user_id === session.sub);
+
+        if (liked) {
+            await supabase.from("likes").delete()
+                .eq("post_id", post.id)
+                .eq("user_id", session.sub);
+        } else {
+            await supabase.from("likes").insert({
+                post_id: post.id,
+                user_id: session.sub,
+            });
+        }
+
+        fetchPosts();
+    };
+
     useEffect(() => {
         fetchPosts();
     }, []);
@@ -88,10 +107,21 @@ export default function Home() {
 
             {posts.map((post) => (
                 <div key={post.id}>
+                    {post.profiles?.avatar_url && (
+                        <img src={post.profiles.avatar_url} alt="avatar" width={40}/>
+                    )}
+                    <p><strong>{post.profiles?.username}</strong></p>
                     <p>{post.content}</p>
                     {post.image && (
                         <img src={post.image} alt="post afbeelding" width={200}/>
                     )}
+                    <button onClick={() => toggleLike(post)}>
+                        {post.likes.some(like => like.user_id === session.sub)
+                            ? <FaHeart/>
+                            : <CiHeart/>
+                        }
+                        {post.likes.length}
+                    </button>
                     {post.user_id === session?.sub && (
                         <button onClick={() => handleDelete(post.id)}>
                             Verwijderen
