@@ -30,10 +30,10 @@ export default function Header() {
         <div className="header-wrapper">
             <header className="header">
                 <nav className="header-nav">
-                    <a href="#">Drama</a>
-                    <a href="#">Music</a>
-                    <a href="#">News</a>
-                    <a href="#">Discussions</a>
+                    <a href="/explorer-pages/drama">Drama</a>
+                    <a href="/explorer-pages/music">Music</a>
+                    <a href="/explorer-pages/news">News</a>
+                    <a href="discussions">Discussions</a>
                 </nav>
 
                 <div className="header-logo">
@@ -41,9 +41,9 @@ export default function Header() {
                 </div>
 
                 <nav className="header-right">
-                    <a href="#">Friends</a>
+                    <a href="/users/friends">Friends</a>
                     <a href="#">Chat</a>
-                    <a href="#">Discover</a>
+                    <a href="/users/discover">Discover</a>
                     <a href="/profile">Profile</a>
                     {session && (
                         <div className="header-user">

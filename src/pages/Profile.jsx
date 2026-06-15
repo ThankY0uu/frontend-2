@@ -13,9 +13,8 @@ export default function Profile() {
   const [message, setMessage] = useState(null);
 
 useEffect(() => {
-  if (session) fetchProfile();
-}, [session]);
-
+  if (!session) return;
+  
   const fetchProfile = async () => {
     const { data, error } = await supabase
       .from('profiles')
@@ -31,6 +30,9 @@ useEffect(() => {
     }
     setLoading(false);
   };
+
+  fetchProfile();
+}, [session]);
 
   const updateProfile = async () => {
     let avatarUrl = profile?.avatar_url ?? null;
