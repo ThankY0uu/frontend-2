@@ -18,7 +18,7 @@ export default function Header() {
                     <a href="#">Drama</a>
                     <a href="#">Music</a>
                     <a href="#">News</a>
-                    <a href="#">Discussions</a>
+                    <a href="/Discussions">Discussions</a>
                 </nav>
 
                 <div className="header-logo">
