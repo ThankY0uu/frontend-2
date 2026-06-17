@@ -1,0 +1,87 @@
+/* Discussion */
+.discussions-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 20px;
+    gap: 24px;
+}
+
+.discussions-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    width: 100%;
+    max-width: 1400px;
+}
+
+.discussion-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px;
+    border: 1px solid #C4BCE7;
+    border-radius: 12px;
+    background: #fdf8ff;
+    width: 300px;
+}
+
+.discussion-card .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.discussion-card .post-image {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.like-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    background: #C4BCE7;
+    color: #3a2a5a;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    align-self: flex-start;
+}
+
+.like-btn:hover {
+    background: #c9b8e8;
+}
+
+.search-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 640px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 20px;
+    border: 1px solid #C4BCE7;
+    border-radius: 20px;
+    background: #fdf8ff;
+    color: #3a2a5a;
+    box-sizing: border-box;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #c9b8e8;
+}
+
+.tag-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
