@@ -1,8 +1,9 @@
 import { useSession } from '../hooks/useSession';
 import { supabase } from '../supabase';
+import { Link } from 'react-router';
+import { FaPenAlt } from 'react-icons/fa';
 import './Header.css';
 import logo from '/Logo.png';
-
 
 export default function Header() {
     const { session } = useSession();
@@ -18,7 +19,7 @@ export default function Header() {
                     <a href="#">Drama</a>
                     <a href="#">Music</a>
                     <a href="#">News</a>
-                    <a href="#">Discussions</a>
+                    <Link to="/">Discussions</Link>
                 </nav>
 
                 <div className="header-logo">
@@ -41,6 +42,12 @@ export default function Header() {
                     )}
                 </nav>
             </header>
+
+            {session && (
+                <Link to="/home">
+                    <button className="post-btn"><FaPenAlt /></button>
+                </Link>
+            )}
         </div>
     );
 }
