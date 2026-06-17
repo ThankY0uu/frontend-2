@@ -3,6 +3,8 @@ import {useState, useEffect} from 'react';
 import {useSession} from '../hooks/useSession';
 import SearchingPost, {Tags} from '../components/SearchingPost.jsx';
 import {supabase} from '../supabase';
+import { FaPenAlt } from "react-icons/fa";
+import { Link } from "react-router";
 import {FaHeart} from 'react-icons/fa';
 import {CiHeart} from 'react-icons/ci';
 
@@ -90,6 +92,11 @@ export default function Discussions() {
                     </div>
                 ))}
             </div>
+            <Link to="/">
+                <button className="post-btn">
+                    <FaPenAlt />
+                </button>
+            </Link>
         </div>
     );
 }
