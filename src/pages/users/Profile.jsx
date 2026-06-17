@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../supabase';
-import { useSession } from '../hooks/useSession';
+import { supabase } from '../../supabase';
+import { useSession } from '../../hooks/useSession';
 
 export default function Profile() {
   const { session } = useSession();
@@ -61,6 +61,7 @@ useEffect(() => {
 
   return (
     <div>
+      <a href="requests">Verzoeken</a>
       <h1>Mijn profiel</h1>
 
       {profile?.avatar_url && (

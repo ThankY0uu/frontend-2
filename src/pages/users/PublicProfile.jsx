@@ -9,64 +9,112 @@ export default function PublicProfile() {
   const [profile, setProfile] = useState(null);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isFollowing, setIsFollowing] = useState(false);
+  const [friendStatus, setFriendStatus] = useState(null);
+  const [isBlocked, setIsBlocked] = useState(false);
+  const [showReportForm, setShowReportForm] = useState(false);
+  const [reportReason, setReportReason] = useState('');
+  const [reportMessage, setReportMessage] = useState(null);
 
   useEffect(() => {
+    if (!session) return;
+
     const fetchProfile = async () => {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('profiles')
         .select('*')
         .eq('user_id', id)
         .single();
 
-      if (!error) setProfile(data);
+      if (data) setProfile(data);
       setLoading(false);
     };
 
     const fetchPosts = async () => {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('post')
         .select('*')
         .eq('user_id', id)
         .order('created_at', { ascending: false });
 
-      if (!error) setPosts(data);
+      if (data) setPosts(data);
     };
 
-    const checkFollow = async () => {
+    const checkFriendStatus = async () => {
       const { data } = await supabase
-        .from('follows')
+        .from('friend_requests')
         .select('*')
-        .eq('follower_id', session.sub)
-        .eq('following_id', id)
+        .or(`sender_id.eq.${session.sub},receiver_id.eq.${session.sub}`)
+        .or(`sender_id.eq.${id},receiver_id.eq.${id}`)
         .single();
 
-      if (data) setIsFollowing(true);
+      if (data) setFriendStatus(data.status);
+    };
+
+    const checkBlocked = async () => {
+      const { data } = await supabase
+        .from('blocks')
+        .select('*')
+        .eq('blocker_id', session.sub)
+        .eq('blocked_id', id)
+        .single();
+
+      if (data) setIsBlocked(true);
     };
 
     fetchProfile();
     fetchPosts();
-    if (session) checkFollow();
+    checkFriendStatus();
+    checkBlocked();
   }, [id, session]);
 
-  const handleFollow = async () => {
-    await supabase.from('follows').insert({
-      follower_id: session.sub,
-      following_id: id,
+  const sendRequest = async () => {
+    await supabase.from('friend_requests').insert({
+      sender_id: session.sub,
+      receiver_id: id,
     });
-    setIsFollowing(true);
+    setFriendStatus('pending');
   };
 
-  const handleUnfollow = async () => {
-    await supabase.from('follows').delete()
-      .eq('follower_id', session.sub)
-      .eq('following_id', id);
-    setIsFollowing(false);
+  const blockUser = async () => {
+    await supabase.from('blocks').insert({
+      blocker_id: session.sub,
+      blocked_id: id,
+    });
+    setIsBlocked(true);
+  };
+
+  const unblockUser = async () => {
+    await supabase.from('blocks').delete()
+      .eq('blocker_id', session.sub)
+      .eq('blocked_id', id);
+    setIsBlocked(false);
+  };
+
+  const submitReport = async () => {
+    await supabase.from('reports').insert({
+      reporter_id: session.sub,
+      reported_user_id: id,
+      reason: reportReason,
+    });
+    setReportMessage('Melding verstuurd. Bedankt!');
+    setReportReason('');
+    setShowReportForm(false);
   };
 
   if (loading) return <p>Laden...</p>;
   if (!profile) return <p>Profiel niet gevonden.</p>;
-  if (profile.is_private) return <p>Dit profiel is privé.</p>;
+
+  if (isBlocked) {
+    return (
+      <div>
+        <p>Je hebt deze gebruiker geblokkeerd.</p>
+        <button onClick={unblockUser}>Deblokkeren</button>
+      </div>
+    );
+  }
+
+  const isFriend = friendStatus === 'accepted';
+  const canSeePosts = !profile.is_private || isFriend;
 
   return (
     <div>
@@ -77,21 +125,50 @@ export default function PublicProfile() {
       <p>{profile.bio}</p>
 
       {session.sub !== id && (
-        <button onClick={isFollowing ? handleUnfollow : handleFollow}>
-          {isFollowing ? 'Ontvolgen' : 'Volgen'}
-        </button>
+        <>
+          {friendStatus === null && (
+            <button onClick={sendRequest}>Vriendschapsverzoek sturen</button>
+          )}
+          {friendStatus === 'pending' && (
+            <button disabled>Verzoek verstuurd</button>
+          )}
+          {friendStatus === 'accepted' && (
+            <p>✅ Vrienden</p>
+          )}
+          <button onClick={blockUser}>Blokkeren</button>
+          <button onClick={() => setShowReportForm(!showReportForm)}>Rapporteren</button>
+        </>
       )}
 
-      <h2>Posts</h2>
-      {posts.length === 0 && <p>Geen posts.</p>}
-      {posts.map((post) => (
-        <div key={post.id}>
-          <p>{post.content}</p>
-          {post.image_url && (
-            <img src={post.image_url} alt="post" width={200} />
-          )}
+      {showReportForm && (
+        <div>
+          <textarea
+            placeholder="Waarom rapporteer je deze gebruiker?"
+            value={reportReason}
+            onChange={(e) => setReportReason(e.target.value)}
+          />
+          <button onClick={submitReport}>Melding versturen</button>
         </div>
-      ))}
+      )}
+
+      {reportMessage && <p>{reportMessage}</p>}
+
+      {canSeePosts ? (
+        <>
+          <h2>Posts</h2>
+          {posts.length === 0 && <p>Geen posts.</p>}
+          {posts.map((post) => (
+            <div key={post.id}>
+              <p>{post.content}</p>
+              {post.image_url && (
+                <img src={post.image_url} alt="post" width={200} />
+              )}
+            </div>
+          ))}
+        </>
+      ) : (
+        <p>Dit profiel is privé. Stuur een vriendschapsverzoek om de posts te zien.</p>
+      )}
     </div>
   );
 }

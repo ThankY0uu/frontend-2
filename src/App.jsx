@@ -3,10 +3,12 @@ import PrivateRoute from './components/PrivateRoute';
 import Auth from './pages/Auth';
 import Home from './pages/Home';
 import Header from './components/Header';
-import Profile from './pages/Profile';
+import Profile from './pages/users/Profile';
 import PublicProfile from './pages/users/PublicProfile';
 import Users from './pages/users/discover';
 import Friends from './pages/users/friends';
+import Requests from './pages/users/requests';
+import Privacy from './pages/explorer-pages/Privacy';
 
 
 export default function App() {
@@ -33,6 +35,13 @@ export default function App() {
         <Route path="/users/friends" element={
           <PrivateRoute>
             <Friends />
+          </PrivateRoute>
+        } />
+        <Route path="/privacy" element={<Privacy />} />
+
+        <Route path="/requests" element={
+          <PrivateRoute>
+            <Requests />
           </PrivateRoute>
         } />
         <Route path="/login" element={<Auth mode="login" />} />

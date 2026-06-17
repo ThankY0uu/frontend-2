@@ -34,6 +34,7 @@ export default function Header() {
                     <a href="/explorer-pages/music">Music</a>
                     <a href="/explorer-pages/news">News</a>
                     <a href="discussions">Discussions</a>
+                    <a href="/privacy">Privacybeleid</a>
                 </nav>
 
                 <div className="header-logo">
@@ -41,6 +42,7 @@ export default function Header() {
                 </div>
 
                 <nav className="header-right">
+
                     <a href="/users/friends">Friends</a>
                     <a href="#">Chat</a>
                     <a href="/users/discover">Discover</a>
