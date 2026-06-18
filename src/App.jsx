@@ -1,7 +1,8 @@
-import { Routes, Route } from 'react-router';
+import {Routes, Route} from 'react-router';
 import PrivateRoute from './components/PrivateRoute';
 import Auth from './pages/Auth';
 import Home from './pages/Home';
+import Discussions from './pages/Discussions';
 import Header from './components/Header';
 import Profile from './pages/users/Profile';
 import PublicProfile from './pages/users/PublicProfile';
@@ -9,7 +10,6 @@ import Users from './pages/users/discover';
 import Friends from './pages/users/friends';
 import Requests from './pages/users/requests';
 import Privacy from './pages/explorer-pages/Privacy';
-
 
 export default function App() {
   return (
@@ -21,6 +21,7 @@ export default function App() {
             <Home />
           </PrivateRoute>
         } />
+        <Route path="/discussions" element={<Discussions />} />
         <Route path="/profile" element={
           <PrivateRoute>
             <Profile />
@@ -38,7 +39,6 @@ export default function App() {
           </PrivateRoute>
         } />
         <Route path="/privacy" element={<Privacy />} />
-
         <Route path="/requests" element={
           <PrivateRoute>
             <Requests />

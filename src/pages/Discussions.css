@@ -1,0 +1,165 @@
+/* Discussion */
+.discussions-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 20px;
+    gap: 24px;
+}
+
+.discussions-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    width: 100%;
+    max-width: 1400px;
+}
+
+.discussion-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px;
+    border: 1px solid #C4BCE7;
+    border-radius: 12px;
+    background: #fdf8ff;
+    width: 300px;
+}
+
+.discussion-card .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.discussion-card .post-image {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.like-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    background: #C4BCE7;
+    color: #3a2a5a;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    align-self: flex-start;
+}
+
+.like-btn:hover {
+    background: #c9b8e8;
+}
+
+.search-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 640px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 20px;
+    border: 1px solid #C4BCE7;
+    border-radius: 20px;
+    background: #fdf8ff;
+    color: #3a2a5a;
+    box-sizing: border-box;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #c9b8e8;
+}
+
+.tag-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.search-box {
+    margin: 20px 0;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 20px;
+    background: #f0ecf8;
+    color: #3a2a5a;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.search-input:focus {
+    outline: 2px solid #C4BCE7;
+}
+
+.tag-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    background: #C4BCE7;
+    color: #3a2a5a;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.2s;
+}
+
+.tag-btn:hover {
+    background: #c9b8e8;
+}
+
+.tag-btn.active {
+    background: #E3ABC4;
+    color: white;
+}
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 8px 0;
+}
+
+.tag-label {
+    padding: 4px 12px;
+    border-radius: 16px;
+    background: #C4BCE7;
+    color: #3a2a5a;
+    font-size: 12px;
+}
+.post-btn {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    padding: 16px;
+    background: #C4BCE7;
+    color: #3a2a5a;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.post-btn:hover {
+    background: #c9b8e8;
+}
