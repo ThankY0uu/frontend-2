@@ -1,0 +1,92 @@
+/* Header */
+.header-wrapper {
+  background: #9b8abf;
+  padding: 2px 0;
+}
+
+.header {
+  background: #C4BCE7;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* Logo */
+.header-logo img {
+  height: 80px;
+  width: auto;
+  display: block;
+}
+
+/* Nav links (links én rechts) */
+.header-nav,
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.header-right {
+  justify-content: flex-end;
+}
+
+.header-nav a,
+.header-right a {
+  color: #3a2a5a;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.header-nav a:hover,
+.header-right a:hover {
+  background: #E3ABC4;
+}
+
+/* User gedeelte */
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 8px;
+}
+
+.header-user span {
+  color: #3a2a5a;
+  font-size: 13px;
+}
+
+.header-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #E3ABC4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3a2a5a;
+  font-size: 13px;
+  font-weight: 600;
+  object-fit: cover;
+}
+
+/* Uitloggen knop */
+.header-user button {
+  background: #E3ABC4;
+  border: none;
+  color: #3a2a5a;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.header-user button:hover {
+  background: #c9789a;
+  color: #fdf8ff;
+}

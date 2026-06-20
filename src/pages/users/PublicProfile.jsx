@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { supabase } from '../../supabase';
 import { useSession } from '../../hooks/useSession';
+import './users.css';
 
 export default function PublicProfile() {
   const { id } = useParams();
@@ -106,9 +107,11 @@ export default function PublicProfile() {
 
   if (isBlocked) {
     return (
-      <div>
-        <p>Je hebt deze gebruiker geblokkeerd.</p>
-        <button onClick={unblockUser}>Deblokkeren</button>
+      <div className="publicprofile-page">
+        <div className="publicprofile-blocked-card">
+          <p>Je hebt deze gebruiker geblokkeerd.</p>
+          <button className="publicprofile-btn" onClick={unblockUser}>Deblokkeren</button>
+        </div>
       </div>
     );
   }
@@ -117,58 +120,74 @@ export default function PublicProfile() {
   const canSeePosts = !profile.is_private || isFriend;
 
   return (
-    <div>
-      {profile.avatar_url && (
-        <img src={profile.avatar_url} alt="avatar" width={100} />
-      )}
-      <h1>{profile.username}</h1>
-      <p>{profile.bio}</p>
+    <div className="publicprofile-page">
+      <div
+        className="publicprofile-card"
+        style={{ background: profile.bg_color || '#fff' }}
+      >
+        <div className="publicprofile-header">
+          {profile.avatar_url ? (
+            <img className="publicprofile-avatar" src={profile.avatar_url} alt="avatar" />
+          ) : (
+            <div className="publicprofile-avatar-placeholder">?</div>
+          )}
 
-      {session.sub !== id && (
-        <>
-          {friendStatus === null && (
-            <button onClick={sendRequest}>Vriendschapsverzoek sturen</button>
-          )}
-          {friendStatus === 'pending' && (
-            <button disabled>Verzoek verstuurd</button>
-          )}
-          {friendStatus === 'accepted' && (
-            <p>✅ Vrienden</p>
-          )}
-          <button onClick={blockUser}>Blokkeren</button>
-          <button onClick={() => setShowReportForm(!showReportForm)}>Rapporteren</button>
-        </>
-      )}
-
-      {showReportForm && (
-        <div>
-          <textarea
-            placeholder="Waarom rapporteer je deze gebruiker?"
-            value={reportReason}
-            onChange={(e) => setReportReason(e.target.value)}
-          />
-          <button onClick={submitReport}>Melding versturen</button>
+          <div className="publicprofile-info">
+            <h1>{profile.username}</h1>
+            <p className="publicprofile-bio">{profile.bio}</p>
+          </div>
         </div>
-      )}
 
-      {reportMessage && <p>{reportMessage}</p>}
+        {session.sub !== id && (
+          <div className="publicprofile-actions">
+            {friendStatus === null && (
+              <button className="publicprofile-btn" onClick={sendRequest}>Vriendschapsverzoek sturen</button>
+            )}
+            {friendStatus === 'pending' && (
+              <button className="publicprofile-btn" disabled>Verzoek verstuurd</button>
+            )}
+            {friendStatus === 'accepted' && (
+              <span className="publicprofile-friend-badge">✅ Vrienden</span>
+            )}
+            <button className="publicprofile-btn publicprofile-btn-danger" onClick={blockUser}>Blokkeren</button>
+            <button className="publicprofile-btn" onClick={() => setShowReportForm(!showReportForm)}>Rapporteren</button>
+          </div>
+        )}
 
-      {canSeePosts ? (
-        <>
+        {showReportForm && (
+          <div className="publicprofile-report-box">
+            <textarea
+              placeholder="Waarom rapporteer je deze gebruiker?"
+              value={reportReason}
+              onChange={(e) => setReportReason(e.target.value)}
+            />
+            <button className="publicprofile-btn" onClick={submitReport}>Melding versturen</button>
+          </div>
+        )}
+
+        {reportMessage && <p className="publicprofile-report-message">{reportMessage}</p>}
+
+        <div className="publicprofile-posts-section">
           <h2>Posts</h2>
-          {posts.length === 0 && <p>Geen posts.</p>}
-          {posts.map((post) => (
-            <div key={post.id}>
-              <p>{post.content}</p>
-              {post.image_url && (
-                <img src={post.image_url} alt="post" width={200} />
-              )}
-            </div>
-          ))}
-        </>
-      ) : (
-        <p>Dit profiel is privé. Stuur een vriendschapsverzoek om de posts te zien.</p>
-      )}
+          {canSeePosts ? (
+            <>
+              {posts.length === 0 && <p>Geen posts.</p>}
+              <div className="publicprofile-posts-grid">
+                {posts.map((post) => (
+                  <div key={post.id} className="publicprofile-post-card">
+                    {post.image && (
+                      <img src={post.image} alt="post" />
+                    )}
+                    <p>{post.content}</p>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : (
+            <p>Dit profiel is privé. Stuur een vriendschapsverzoek om de posts te zien.</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

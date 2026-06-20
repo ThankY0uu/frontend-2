@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../supabase';
 import { useSession } from '../../hooks/useSession';
+import './users.css';
 
 export default function Requests() {
   const { session } = useSession();
@@ -55,16 +56,20 @@ export default function Requests() {
   };
 
   return (
-    <div>
+    <div className="requests-page">
       <h1>Vriendschapsverzoeken</h1>
       {requests.length === 0 && <p>Geen openstaande verzoeken.</p>}
-      {requests.map((req) => (
-        <div key={req.id}>
-          <p>{req.profile?.username}</p>
-          <button onClick={() => acceptRequest(req.id)}>Accepteren</button>
-          <button onClick={() => declineRequest(req.id)}>Weigeren</button>
-        </div>
-      ))}
+      <div className="requests-list">
+        {requests.map((req) => (
+          <div key={req.id} className="requests-card">
+            <p>{req.profile?.username}</p>
+            <div className="requests-actions">
+              <button className="requests-btn-accept" onClick={() => acceptRequest(req.id)}>Accepteren</button>
+              <button className="requests-btn-decline" onClick={() => declineRequest(req.id)}>Weigeren</button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

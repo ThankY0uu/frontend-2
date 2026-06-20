@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../../supabase';
 import { useSession } from '../../hooks/useSession';
 import { useNavigate } from 'react-router';
+import './users.css';
 
 export default function Friends() {
   const { session } = useSession();
@@ -36,17 +37,25 @@ export default function Friends() {
   }, [session]);
 
   return (
-    <div>
+    <div className="friends-page">
       <h1>Mijn vrienden</h1>
       {friends.length === 0 && <p>Je hebt nog geen vrienden.</p>}
-      {friends.map((friend) => (
-        <div key={friend.id} onClick={() => navigate(`/profile/${friend.user_id}`)}>
-          {friend.avatar_url && (
-            <img src={friend.avatar_url} alt="avatar" width={40} />
-          )}
-          <p>{friend.username}</p>
-        </div>
-      ))}
+      <div className="friends-grid">
+        {friends.map((friend) => (
+          <div
+            key={friend.id}
+            className="friends-card"
+            onClick={() => navigate(`/profile/${friend.user_id}`)}
+          >
+            {friend.avatar_url ? (
+              <img src={friend.avatar_url} alt="avatar" />
+            ) : (
+              <div className="friends-avatar-placeholder">?</div>
+            )}
+            <p>{friend.username}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

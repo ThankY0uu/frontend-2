@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSession } from '../hooks/useSession';
 import { supabase } from '../supabase';
-import './Header.css';
+import './Component.css';
 import logo from '/Logo.png';
 
 export default function Header() {
@@ -30,18 +30,13 @@ export default function Header() {
         <div className="header-wrapper">
             <header className="header">
                 <nav className="header-nav">
-<<<<<<< HEAD
-                    <a href="/explorer-pages/drama">Drama</a>
-                    <a href="/explorer-pages/music">Music</a>
-                    <a href="/explorer-pages/news">News</a>
-                    <a href="discussions">Discussions</a>
-                    <a href="/privacy">Privacybeleid</a>
-=======
-                    <a href="#">Drama</a>
-                    <a href="#">Music</a>
-                    <a href="#">News</a>
-                    <a href="/Discussions">Discussions</a>
->>>>>>> origin/discussions
+                    <nav className="header-nav">
+                        <a href="/explorer-pages/drama">Drama</a>
+                        <a href="/explorer-pages/music">Music</a>
+                        <a href="/explorer-pages/news">News</a>
+                        <a href="/discussions">Discussions</a>
+                        <a href="/privacy">Privacybeleid</a>
+                    </nav>
                 </nav>
 
                 <div className="header-logo">
