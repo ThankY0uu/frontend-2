@@ -494,3 +494,14 @@
   background: #d96b6b;
   color: #fff;
 }
+.discover-search {
+  width: 100%;
+  max-width: 300px;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  margin-bottom: 16px;
+  background: #C4BCE7;
+  color: #3a2a5a;
+}

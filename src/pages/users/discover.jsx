@@ -5,6 +5,7 @@ import './users.css';
 
 export default function Users() {
   const [users, setUsers] = useState([]);
+  const [search, setSearch] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,11 +20,26 @@ export default function Users() {
     fetchUsers();
   }, []);
 
+  const filteredUsers = users.filter((user) =>
+    user.username?.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="discover-page">
       <h1>Alle gebruikers</h1>
+
+      <input
+        className="discover-search"
+        type="text"
+        placeholder="Zoek op gebruikersnaam..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      {filteredUsers.length === 0 && <p>Geen gebruikers gevonden.</p>}
+
       <div className="discover-grid">
-        {users.map((user) => (
+        {filteredUsers.map((user) => (
           <div
             key={user.id}
             className="discover-card"
