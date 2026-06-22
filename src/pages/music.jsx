@@ -2,13 +2,13 @@ import './media.css';
 import {useState, useEffect} from 'react';
 import {supabase} from '../supabase';
 
-export default function Drama() {
+export default function Music() {
     const [news, setNews] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('all');
 
     const fetchNews = async () => {
         const {data, error} = await supabase
-            .from('drama_news')
+            .from('music_news')
             .select('*')
             .order('created_at', {ascending: false});
 
@@ -25,10 +25,10 @@ export default function Drama() {
 
     return (
         <div className="news-wrapper">
-            <h1>Drama</h1>
+            <h1>Music</h1>
 
             <div className="tag-filters">
-                {['all', 'kdrama', 'cdrama', 'jdrama'].map(cat => (
+                {['all', 'kpop', 'cpop', 'jpop'].map(cat => (
                     <button
                         key={cat}
                         className={`tag-btn ${selectedCategory === cat ? 'active' : ''}`}
