@@ -2,14 +2,15 @@ import './home.css';
 import {useState, useEffect} from 'react';
 import {useSession} from '../hooks/useSession';
 import {supabase} from '../supabase';
-import {FaHeart} from "react-icons/fa";
-import {CiHeart} from "react-icons/ci";
+import {Tags} from '../components/SearchingPost';
 
 export default function Home() {
     const {session} = useSession();
     const [content, setContent] = useState('');
     const [image, setImage] = useState(null);
     const [posts, setPosts] = useState([]);
+    const [selectedTags, setSelectedTags] = useState([]);
+    const [filterTags, setFilterTags] = useState([]);
 
     const fetchPosts = async () => {
         const {data, error} = await supabase
@@ -18,6 +19,26 @@ export default function Home() {
             .order("created_at", {ascending: false});
 
         if (!error) setPosts(data);
+    };
+
+    const filteredPosts = filterTags.length === 0
+        ? posts
+        : posts.filter(post => post.tags?.some(tag => filterTags.includes(tag)));
+
+    const toggleFilterTag = (tag) => {
+        if (filterTags.includes(tag)) {
+            setFilterTags(filterTags.filter(t => t !== tag));
+        } else {
+            setFilterTags([...filterTags, tag]);
+        }
+    };
+
+    const togglePostTag = (tag) => {
+        if (selectedTags.includes(tag)) {
+            setSelectedTags(selectedTags.filter(t => t !== tag));
+        } else {
+            setSelectedTags([...selectedTags, tag]);
+        }
     };
 
     const handleSubmit = async (event) => {
@@ -48,11 +69,13 @@ export default function Home() {
             user_id: session.sub,
             content: content,
             image: imageUrl,
+            tags: selectedTags,
         });
 
         if (!error) {
             setContent("");
             setImage(null);
+            setSelectedTags([]);
             fetchPosts();
         }
     };
@@ -62,23 +85,6 @@ export default function Home() {
         if (!error) fetchPosts();
     };
 
-    const toggleLike = async (post) => {
-        const liked = post.likes.some(like => like.user_id === session.sub);
-
-        if (liked) {
-            await supabase.from("likes").delete()
-                .eq("post_id", post.id)
-                .eq("user_id", session.sub);
-        } else {
-            await supabase.from("likes").insert({
-                post_id: post.id,
-                user_id: session.sub,
-            });
-        }
-
-        fetchPosts();
-    };
-
     useEffect(() => {
         fetchPosts();
     }, []);
@@ -86,6 +92,19 @@ export default function Home() {
     return (
         <div>
             <h1>Posten</h1>
+
+            <div className="tag-filters">
+                {Tags.map(tag => (
+                    <button
+                        key={tag}
+                        className={`tag-btn ${filterTags.includes(tag) ? "active" : ""}`}
+                        onClick={() => toggleFilterTag(tag)}
+                    >
+                        {tag}
+                    </button>
+                ))}
+            </div>
+
             <form onSubmit={handleSubmit}>
                 <textarea
                     rows="5"
@@ -94,6 +113,18 @@ export default function Home() {
                     onChange={(e) => setContent(e.target.value)}
                     required
                 />
+                <div className="tag-filters">
+                    {Tags.map(tag => (
+                        <button
+                            key={tag}
+                            type="button"
+                            className={`tag-btn ${selectedTags.includes(tag) ? "active" : ""}`}
+                            onClick={() => togglePostTag(tag)}
+                        >
+                            {tag}
+                        </button>
+                    ))}
+                </div>
                 <label className="file-label">
                     {image ? image.name : "Kies foto"}
                     <input
@@ -105,30 +136,30 @@ export default function Home() {
                 <button type="submit">Posten</button>
             </form>
 
-            {posts.map((post) => (
-                <div key={post.id}>
-                    {post.profiles?.avatar_url && (
-                        <img src={post.profiles.avatar_url} alt="avatar" width={40}/>
-                    )}
-                    <p><strong>{post.profiles?.username}</strong></p>
-                    <p>{post.content}</p>
-                    {post.image && (
-                        <img src={post.image} alt="post afbeelding" width={200}/>
-                    )}
-                    <button onClick={() => toggleLike(post)}>
-                        {post.likes.some(like => like.user_id === session.sub)
-                            ? <FaHeart/>
-                            : <CiHeart/>
-                        }
-                        {post.likes.length}
-                    </button>
-                    {post.user_id === session?.sub && (
+            {filteredPosts
+                .filter(post => post.user_id === session?.sub)
+                .map((post) => (
+                    <div key={post.id}>
+                        {post.profiles?.avatar_url && (
+                            <img src={post.profiles.avatar_url} alt="avatar" width={40}/>
+                        )}
+                        <p><strong>{post.profiles?.username}</strong></p>
+                        <p>{post.content}</p>
+                        {post.tags?.length > 0 && (
+                            <div className="tag-filters">
+                                {post.tags.map(tag => (
+                                    <span key={tag} className="tag-btn">{tag}</span>
+                                ))}
+                            </div>
+                        )}
+                        {post.image && (
+                            <img src={post.image} alt="post afbeelding" width={200}/>
+                        )}
                         <button onClick={() => handleDelete(post.id)}>
                             Verwijderen
                         </button>
-                    )}
-                </div>
-            ))}
+                    </div>
+                ))}
         </div>
     );
 }
