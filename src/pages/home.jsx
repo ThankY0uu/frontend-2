@@ -93,18 +93,6 @@ export default function Home() {
         <div>
             <h1>Posten</h1>
 
-            <div className="tag-filters">
-                {Tags.map(tag => (
-                    <button
-                        key={tag}
-                        className={`tag-btn ${filterTags.includes(tag) ? "active" : ""}`}
-                        onClick={() => toggleFilterTag(tag)}
-                    >
-                        {tag}
-                    </button>
-                ))}
-            </div>
-
             <form onSubmit={handleSubmit}>
                 <textarea
                     rows="5"
