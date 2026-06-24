@@ -1,10 +1,10 @@
 import {Routes, Route} from 'react-router';
 import PrivateRoute from './components/PrivateRoute';
 import Auth from './pages/Auth';
-import Music from './pages/music';
-import Drama from './pages/drama';
+import Music from './pages/explorer-pages/music';
+import Drama from './pages/explorer-pages/drama';
 import Home from './pages/Home';
-import Discussions from './pages/Discussions';
+import Discussions from './pages/explorer-pages/Discussions';
 import Header from './components/Header';
 import Profile from './pages/users/Profile';
 import PublicProfile from './pages/users/PublicProfile';
@@ -23,10 +23,10 @@ export default function App() {
             <Home />
           </PrivateRoute>
         } />
-        <Route path="/discussions" element={<Discussions />} />
-        <Route path="/drama" element={<Drama />} />
-        <Route path="/music" element={<Music />} />
-        <Route path="/profile" element={
+        <Route path="explorer-pages/Discussions" element={<Discussions />} />
+        <Route path="explorer-pages/drama" element={<Drama />} />
+        <Route path="explorer-pages/music" element={<Music />} />
+        <Route path="users/profile" element={
           <PrivateRoute>
             <Profile />
           </PrivateRoute>
@@ -42,7 +42,7 @@ export default function App() {
             <Friends />
           </PrivateRoute>
         } />
-        <Route path="/privacy" element={<Privacy />} />
+        <Route path="explorer-pages/privacy" element={<Privacy />} />
         <Route path="/requests" element={
           <PrivateRoute>
             <Requests />

@@ -39,28 +39,28 @@ export default function PublicProfile() {
 
       if (data) setPosts(data);
     };
-
     const checkFriendStatus = async () => {
       const { data } = await supabase
         .from('friend_requests')
         .select('*')
-        .or(`sender_id.eq.${session.sub},receiver_id.eq.${session.sub}`)
-        .or(`sender_id.eq.${id},receiver_id.eq.${id}`)
+        .or(
+          `and(sender_id.eq.${session.sub},receiver_id.eq.${id}),and(sender_id.eq.${id},receiver_id.eq.${session.sub})`
+        )
         .single();
 
       if (data) setFriendStatus(data.status);
     };
 
-    const checkBlocked = async () => {
-      const { data } = await supabase
-        .from('blocks')
-        .select('*')
-        .eq('blocker_id', session.sub)
-        .eq('blocked_id', id)
-        .single();
+ const checkBlocked = async () => {
+  const { data } = await supabase
+    .from('blocks')
+    .select('*')
+    .eq('blocker_id', session.sub)
+    .eq('blocked_id', id)
+    .maybeSingle();  // ipv .single()
 
-      if (data) setIsBlocked(true);
-    };
+  if (data) setIsBlocked(true);
+};
 
     fetchProfile();
     fetchPosts();
@@ -76,13 +76,23 @@ export default function PublicProfile() {
     setFriendStatus('pending');
   };
 
-  const blockUser = async () => {
-    await supabase.from('blocks').insert({
-      blocker_id: session.sub,
-      blocked_id: id,
-    });
-    setIsBlocked(true);
-  };
+const blockUser = async () => {
+  await supabase.from('blocks').insert({
+    blocker_id: session.sub,
+    blocked_id: id,
+  });
+
+  // Verwijder ook de vriendschap
+  await supabase
+    .from('friend_requests')
+    .delete()
+    .or(
+      `and(sender_id.eq.${session.sub},receiver_id.eq.${id}),and(sender_id.eq.${id},receiver_id.eq.${session.sub})`
+    );
+
+  setIsBlocked(true);
+  setFriendStatus(null);
+};
 
   const unblockUser = async () => {
     await supabase.from('blocks').delete()

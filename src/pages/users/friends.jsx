@@ -30,8 +30,21 @@ export default function Friends() {
         .select('*')
         .in('user_id', friendIds);
 
-      if (profiles) setFriends(profiles);
-    };
+      // Haal geblokkeerde users op
+      const { data: blocked } = await supabase
+        .from('blocks')
+        .select('blocked_id')
+        .eq('blocker_id', session.sub);
+
+      const blockedIds = blocked?.map((b) => b.blocked_id) || [];
+
+      // Filter geblokkeerde users uit vriendenlijst
+      const filteredProfiles = profiles?.filter(
+        (p) => !blockedIds.includes(p.user_id)
+      );
+
+      if (filteredProfiles) setFriends(filteredProfiles);
+    };                                           
 
     fetchFriends();
   }, [session]);

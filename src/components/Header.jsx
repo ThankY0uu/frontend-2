@@ -33,30 +33,24 @@ export default function Header() {
                 <nav className="header-nav">
                     <a href="/explorer-pages/drama">Drama</a>
                     <a href="/explorer-pages/music">Music</a>
-                    <a href="/explorer-pages/news">News</a>
-                    <a href="/discussions">Discussions</a>
-                    <a href="/privacy">Privacybeleid</a>
+                    <a href="/explorer-pages/Discussions">Discussions</a>
+                    <a href="/explorer-pages/privacy">Privacybeleid</a>
                 </nav>
 
                 <div className="header-logo">
-                    <img src={logo} alt="TeaNet logo" />
+                    <a href="/explorer-pages/Discussions"><img src={logo} alt="TeaNet logo" /></a>
                 </div>
 
                 <nav className="header-right">
 
                     <a href="/users/friends">Friends</a>
-                    <a href="#">Chat</a>
                     <a href="/users/discover">Discover</a>
-                    <a href="/profile">Profile</a>
+                    <a href="/users/profile">Profile</a>
                     {session && (
                         <div className="header-user">
                             <span>{profile?.username ?? session.email}</span>
                             {profile?.avatar_url ? (
-                                <img
-                                    src={profile.avatar_url}
-                                    alt="avatar"
-                                    className="header-avatar"
-                                />
+                                <img src={profile.avatar_url} alt="avatar" className="header-avatar" />
                             ) : (
                                 <div className="header-avatar">
                                     {session.email?.[0].toUpperCase()}
@@ -65,6 +59,10 @@ export default function Header() {
                             <button onClick={handleLogout}>Uitloggen</button>
                         </div>
                     )}
+                    {!session && (
+                        <a href="/login">Inloggen</a>
+                    )}
+
                 </nav>
             </header>
         </div>
