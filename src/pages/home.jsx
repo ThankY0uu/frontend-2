@@ -10,7 +10,6 @@ export default function Home() {
     const [image, setImage] = useState(null);
     const [posts, setPosts] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
-    const [filterTags, setFilterTags] = useState([]);
 
     const fetchPosts = async () => {
         const {data, error} = await supabase
@@ -21,18 +20,7 @@ export default function Home() {
         if (!error) setPosts(data);
     };
 
-    const filteredPosts = filterTags.length === 0
-        ? posts
-        : posts.filter(post => post.tags?.some(tag => filterTags.includes(tag)));
-
-    const toggleFilterTag = (tag) => {
-        if (filterTags.includes(tag)) {
-            setFilterTags(filterTags.filter(t => t !== tag));
-        } else {
-            setFilterTags([...filterTags, tag]);
-        }
-    };
-
+    // Tags toevoegen aan nieuwe post
     const togglePostTag = (tag) => {
         if (selectedTags.includes(tag)) {
             setSelectedTags(selectedTags.filter(t => t !== tag));
@@ -101,6 +89,8 @@ export default function Home() {
                     onChange={(e) => setContent(e.target.value)}
                     required
                 />
+
+                {/* Tags toevoegen aan je nieuwe post */}
                 <div className="tag-filters">
                     {Tags.map(tag => (
                         <button
@@ -113,6 +103,7 @@ export default function Home() {
                         </button>
                     ))}
                 </div>
+
                 <label className="file-label">
                     {image ? image.name : "Kies foto"}
                     <input
@@ -124,15 +115,21 @@ export default function Home() {
                 <button type="submit">Posten</button>
             </form>
 
-            {filteredPosts
+            {/* Alleen posts van de ingelogde gebruiker tonen */}
+            {posts
                 .filter(post => post.user_id === session?.sub)
                 .map((post) => (
                     <div key={post.id}>
+
+                        {/* Toon avatar alleen als die bestaat */}
                         {post.profiles?.avatar_url && (
                             <img src={post.profiles.avatar_url} alt="avatar" width={40}/>
                         )}
+
                         <p><strong>{post.profiles?.username}</strong></p>
                         <p>{post.content}</p>
+
+                        {/* Toon tags alleen als de post er minstens een heeft */}
                         {post.tags?.length > 0 && (
                             <div className="tag-filters">
                                 {post.tags.map(tag => (
@@ -140,9 +137,13 @@ export default function Home() {
                                 ))}
                             </div>
                         )}
+
+                        {/* Toon afbeelding alleen als die bestaat */}
                         {post.image && (
                             <img src={post.image} alt="post afbeelding" width={200}/>
                         )}
+
+                        {/* Geef het ID van deze post mee zodat handleDelete de juiste verwijdert */}
                         <button onClick={() => handleDelete(post.id)}>
                             Verwijderen
                         </button>
