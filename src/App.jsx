@@ -1,30 +1,30 @@
-import { Routes, Route } from 'react-router';
+import {Routes, Route} from 'react-router';
 import PrivateRoute from './components/PrivateRoute';
 import Auth from './pages/Auth';
+import Music from './pages/music';
+import Drama from './pages/drama';
 import Home from './pages/Home';
+import Discussions from './pages/Discussions';
 import Header from './components/Header';
 import Profile from './pages/Profile';
 import PublicProfile from './pages/PublicProfile';
 
 export default function App() {
-  return (
-    <>
-      <Header />
-      <Routes>
-        <Route path="/profile" element={
-          <PrivateRoute>
-            <Profile />
-          </PrivateRoute>
-        } />
-        <Route path="/" element={
-          <PrivateRoute>
-            <Home />
-          </PrivateRoute>
-        } />
-        <Route path="/profile/:id" element={<PublicProfile />} />
-        <Route path="/login" element={<Auth mode="login" />} />
-        <Route path="/register" element={<Auth mode="register" />} />
-      </Routes>
-    </>
-  );
+    return (
+        <>
+            <Header/>
+            <Routes>
+                <Route path="/discussions" element={<Discussions/>}/>
+                <Route path="/drama" element={<Drama/>}/>
+                <Route path="/music" element={<Music/>}/>
+                <Route path="/" element={
+                    <PrivateRoute>
+                        <Home/>
+                    </PrivateRoute>
+                }/>
+                <Route path="/login" element={<Auth mode="login"/>}/>
+                <Route path="/register" element={<Auth mode="register"/>}/>
+            </Routes>
+        </>
+    );
 }
