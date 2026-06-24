@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSession } from '../hooks/useSession';
+import { Link } from 'react-router';
 import { supabase } from '../supabase';
 import './Component.css';
 import logo from '/Logo.png';
@@ -30,13 +31,11 @@ export default function Header() {
         <div className="header-wrapper">
             <header className="header">
                 <nav className="header-nav">
-                    <nav className="header-nav">
-                        <a href="/explorer-pages/drama">Drama</a>
-                        <a href="/explorer-pages/music">Music</a>
-                        <a href="/explorer-pages/news">News</a>
-                        <a href="/discussions">Discussions</a>
-                        <a href="/privacy">Privacybeleid</a>
-                    </nav>
+                    <a href="/explorer-pages/drama">Drama</a>
+                    <a href="/explorer-pages/music">Music</a>
+                    <a href="/explorer-pages/news">News</a>
+                    <a href="/discussions">Discussions</a>
+                    <a href="/privacy">Privacybeleid</a>
                 </nav>
 
                 <div className="header-logo">

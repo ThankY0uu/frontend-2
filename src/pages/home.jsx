@@ -22,40 +22,30 @@ export default function Home() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        
-        // Veiligheidscheck: stop als de gebruiker niet is ingelogd
         if (!session?.sub) {
             alert("Je moet ingelogd zijn om te posten!");
             return;
         }
-
         let imageUrl = null;
-
         if (image) {
             const fileName = `${Date.now()}_${image.name}`;
-
             const { error: uploadError } = await supabase.storage
                 .from("Post")
                 .upload(fileName, image);
-
             if (uploadError) {
                 console.error("Upload error:", uploadError);
                 return;
             }
-
             const { data: urlData } = supabase.storage
                 .from("Post")
                 .getPublicUrl(fileName);
-
             imageUrl = urlData.publicUrl;
         }
-
         const { error } = await supabase.from("post").insert({
             user_id: session.sub, // Nu veilig wegens de check hierboven
             content: content,
             image: imageUrl,
         });
-
         if (!error) {
             setContent("");
             setImage(null);
