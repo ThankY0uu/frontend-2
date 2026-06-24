@@ -26,10 +26,10 @@ export default function Profile() {
 
       if (!error && data) {
         setProfile(data);
-        setUsername(data.username ?? '');
-        setBio(data.bio ?? '');
-        setIsPrivate(data.is_private ?? false);
-        setBgColor(data.bg_color ?? '');
+        setUsername(data.username || '');
+        setBio(data.bio || '');
+        setIsPrivate(data.is_private || false);
+        setBgColor(data.bg_color || '');
       }
       setLoading(false);
     };
@@ -38,7 +38,7 @@ export default function Profile() {
   }, [session]);
 
   const updateProfile = async () => {
-    let avatarUrl = profile?.avatar_url ?? null;
+    let avatarUrl = profile?.avatar_url || null;
 
     if (avatar) {
       const fileName = `${session.sub}-${Date.now()}`;
@@ -63,7 +63,9 @@ export default function Profile() {
       })
       .eq('user_id', session.sub);
 
-    if (!error) setMessage('Profiel opgeslagen!');
+    if (!error) {
+      setMessage('Profiel opgeslagen!');
+    }
   };
 
   const joinedDate = profile?.created_at
@@ -75,14 +77,14 @@ export default function Profile() {
     : '';
 
   if (loading) return <p>Laden...</p>;
-return (
+
+  return (
     <div className="profile-page">
       <div className="profile-card" style={{ background: bgColor || '#fff' }}>
         <a href="requests" className="profile-requests-link">Verzoeken</a>
         <h1>Mijn profiel</h1>
 
         <div className="profile-grid">
-          {/* Links */}
           <div className="profile-col-left">
             <div className="profile-avatar-box">
               {profile?.avatar_url ? (
@@ -98,10 +100,6 @@ return (
               />
             </div>
 
-            <div className="profile-tags-box">
-              Favorite tags (binnenkort)
-            </div>
-
             <div className="profile-color-box">
               <label>Achtergrondkleur publiek profiel</label>
               <input
@@ -113,7 +111,6 @@ return (
             </div>
           </div>
 
-          {/* Rechts */}
           <div className="profile-col-right">
             <div className="profile-username-box">
               <input
@@ -147,7 +144,9 @@ return (
             Profiel privé maken
           </label>
 
-          <button className="profile-save-btn" onClick={updateProfile}>Opslaan</button>
+          <button className="profile-save-btn" onClick={updateProfile}>
+            Opslaan
+          </button>
         </div>
 
         {message && <p>{message}</p>}
