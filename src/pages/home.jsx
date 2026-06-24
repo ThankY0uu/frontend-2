@@ -2,8 +2,7 @@ import './home.css';
 import {useState, useEffect} from 'react';
 import {useSession} from '../hooks/useSession';
 import {supabase} from '../supabase';
-import {Tags} from '../components/SearchingPost';
-
+import {Tags} from '../components/SearchingPost;
 export default function Home() {
     const {session} = useSession();
     const [content, setContent] = useState('');

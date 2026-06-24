@@ -6,6 +6,8 @@ import Drama from './pages/drama';
 import Home from './pages/Home';
 import Discussions from './pages/Discussions';
 import Header from './components/Header';
+import Profile from './pages/Profile';
+import PublicProfile from './pages/PublicProfile';
 
 export default function App() {
     return (
